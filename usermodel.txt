@@ -1,0 +1,19 @@
+usermodel 
+fullname-string 
+emial-string 
+password-string 
+cart-array 
+isAdmin-boolean 
+orders-array
+contact-number
+picture -db 
+
+
+products
+image 
+name 
+price 
+discount 
+bg-color 
+panel color 
+text-color 
