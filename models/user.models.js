@@ -4,30 +4,24 @@ const userSchema = new mongoose.Schema(
   {
     fullname: {
       type: String,
-      required: true,
       minLength: 3,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
       unique: true,
+      trim: true,
     },
     password: {
       type: String,
-      required: true,
     },
     cart: {
       type: Array,
       default: [],
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
     contact: {
-      type: Number,
-      required: true,
+      type: String,  
+      trim: true,
     },
     orders: {
       type: Array,
