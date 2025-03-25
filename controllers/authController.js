@@ -11,7 +11,10 @@ module.exports.registerUser = async (req, res) => {
   }
 
   let user = await userModel.findOne({ email: email });
-  if (user) return res.status(401).json({ error: "You already have an account, please login" });
+  if (user)
+    return res
+      .status(401)
+      .json({ error: "You already have an account, please login" });
 
   bcrypt.genSalt(10, (err, salt) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -19,13 +22,36 @@ module.exports.registerUser = async (req, res) => {
     bcrypt.hash(password, salt, (err, hash) => {
       if (err) return res.status(500).json({ error: err.message });
 
-      userModel.create({ email, password: hash, fullname })
+      userModel
+        .create({ email, password: hash, fullname })
         .then((user) => {
           let token = generateToken(user);
           res.cookie("token", token);
-          return res.status(201).json({ message: "User registered successfully", user, token });
+          return res
+            .status(201)
+            .json({ message: "User registered successfully", user, token });
         })
         .catch(() => res.status(500).json({ error: "Internal Server Error" }));
     });
+  });
+};
+
+module.exports.loginUser = async (req, res) => {
+  let { email, password } = req.body;
+
+  let user = await userModel.findOne({ email: email });
+  if (!user)
+    return res.status(401).json({ error: "Email or Password incorrect" });
+
+  bcrypt.compare(password, user.password, (err, result) => {
+    if (err) return res.status(500).json({ error: "Internal Server Error" });
+
+    if (result) {
+      let token = generateToken(user);
+      res.cookie("token", token);
+      return res.send("You can login");
+    }
+
+    return res.status(401).json({ error: "Email or Password incorrect" });
   });
 };
