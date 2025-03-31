@@ -23,10 +23,10 @@ const userSchema = new mongoose.Schema(
       type: String,  
       trim: true,
     },
-    orders: {
-      type: Array,
-      default: [],
-    },
+    orders: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"product",
+    }],
     picture: {
       type: String,
       default: null,
